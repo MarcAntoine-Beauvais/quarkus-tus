@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+    id 'org.graalvm.buildtools.native' version '0.9.13'
+    id 'java-library'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor = JvmVendorSpec.matching("GraalVM Community")
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-resteasy-reactive-jackson:2.11.2.Final'
+    implementation 'io.quarkus:quarkus-arc:2.11.2.Final'
+    implementation 'io.quarkus:quarkus-smallrye-openapi:2.11.2.Final'
+
+    implementation 'me.desair.tus:tus-java-server:1.0.0-2.0'
+
+    implementation 'io.quarkus:quarkus-undertow'
+
+    testImplementation 'io.quarkus:quarkus-junit5:2.11.2.Final'
+    testImplementation 'io.rest-assured:rest-assured:4.5.1'
+}
+
+group 'com.me'
+version '0.0.1-SNAPSHOT'
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
